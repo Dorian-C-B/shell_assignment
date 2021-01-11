@@ -1,0 +1,41 @@
+1.1: Get-ChildItem: There is a table with the columns Mode, LastWriteTime, Length, and Name. Those are filled with two rows of mode d-----, showing the names of directories in the folder I am working in. Additionally, there is one row of mode -a---- showing the name of the assignment PDF and a number in the Length column.
+1.1: Get-Alias ls: A table indicating that ls is an alias (under CommandType column) and that it refers to Get-ChildItem (ls -> Get-ChildItem)
+1.2: Get-ChildItem -Filter *.extension can be used. "extension" is here a placeholder for file extensions like txt, pdf, docx etc.
+1.2: Get-ChildItem -Filter *.pdf, gci -Filter *.pdf, gci -fi *.pdf, ls -filter *.pdf, ls -fi *pdf
+2.1: Get-Location: This gives C:\Users\User\Desktop\Uni\Semester 3\Winter lab course\6 as working directory
+2.1: Get-ChildItem: This doesn't show different colours. I think that the information in the Moder column shows the type of content and that d----- stands for directory (so a folder) while -a---- stands for some kind of files.
+2.2: sl ..: This changed my working directory to the directory that contains the previous working directory.
+2.2: sl "~\Desktop\Uni\Semester 3\Winter lab course\6" 
+2.2: sl "~\Desktop\Uni\Semester 3\Winter lab course\6\shell_magic"
+3.1: ni -n "hello world" created the file without problems. However, I tried it without the quotation marks before, which didn't work.
+3.2: ni -i d -n "hello_world"
+3.3: Creating the file didn't work because the a file with the same name already exists.
+3.3: ni -n "hello_world.bfe" followed by ren -path ".\hello_world.bfe" -n "hello_world.txt" to create and rename the file
+3.3: move -path ".\hello_world.txt" -d ".\hello_world" to move the file to hello_world
+3.3: move -path ".\hello_world\hello_world.txt" -d ".\" to move the file back to the working directory
+3.3: sl ".\hello_world" to set hello_world as working directory, move -path "..\hello_world.txt" -d "." to move the file into it, move -path ".\hello_world.txt" -d ".." to move it back
+3.4: While move cuts and pastes a file so that there is only one left afterwards, copy creates a copy in the new location but conserves the file in the old location as well.
+3.4: copy "..\hello_world.txt" -d "." to copy the file the first time (I am still in the hello_world folder as working directory)
+3.4: copy ".\hello_world.txt" -d "..\world_hello.txt" to copy and rename at the same time
+3.5: sl ".." to set the working directory to the correct folder, then ri "hello_world.txt" to delete the file
+3.5: When trying ri "hello_world" the PowerShell informs me that the directory contains files and asks me if and how I want to delete them.
+3.5: ri "hello_world" -Recurse to delete the directory and all of its contents
+4.1: There is nothing shown in the console because the file is empty.
+4.2: The command is normally used to write the output of other commands in the console. PowerShell does that automatically though.
+4.2: write "file contents" > "file.txt" then to append information write "more contents" >> "file.txt"
+4.3: write (gci -path "C:\Users\User" -recurse) > home_contents.txt
+4.3: This seems much more useful for files with more text or many data. Especially because the terminal scrolls down to the end of the displayed information, it is important to avoid too much information in the terminal. It can also be used to glimpse at data files and see only the first bit, before exiting using Q.
+5.1: Measure-Object can do a lot. It can measure the number of objects (files and directories) in a directory, a specific property of those (such as length), and maximum/minimum/sum of those. It can also measure single objects by size, number of characters, number of lines etc. 
+5.1: Using Measure-Object ".\file.txt" -word directly did not display anything.
+5.1: It worked using gc -path ".\file.txt" | measure -word
+5.1: Probably, the Measure-Object command is unable to accept a path input itself but can only deal with outputs that are already loaded. So, the Get-Content command generates an output that it directly hands over to the Measure-Object command without showing the object on the terminal. Then, Measure-Object performs its function and displays the result. Similarly, the Output-Host command can only deal with data that is handed to it. Its function is to break it up and display it piece-wise upon demand. So it was also handed the data by Get-Content and did that.
+5.1: gci | measure shows the count of files in the working directory. I have three files in there.
+5.2: write "hello world`nworld hello" > helloworld.txt creates the file helloworld.txt and writes two lines: "hello world" in one and "world hello" in the next
+5.2: sls -path ".\helloworld.txt" -pattern "world" gave two lines as output that indicated the file name (helloworld.txt), the line number and the text in the lines in which the word "world" was found. In the format FILENAME:LINE:TEXT IN LINE
+5.2: sls -path ".\*world*.txt" -pattern "hello"  to search through both files at the same time. The output format was the same, this time showing both helloworld.txt and worldhello.txt
+5.2: I can't find other things to filter Get-ChilItem with from the help pages. So I assume that file type (Mode), date and time of last change (LastWriteTime), and size (Length) can also be used
+5.3: sls -path ".\helloworld.txt" -pattern "world" | measure -word | oh -p
+6.2: tar -x -f ".\aup.tar.gz" to extract the files into the working directory. It created a new directory named "aup"
+6.3: gci -path ".\aup" -filter d -recurse to list all directories within the aup directory. It shows that the deepest level at which something is stored is 3 levels beneath the aup main directory.
+6.3: gc -path ".\aup\cohort1\s001f\s001f1.aup" | oh -p
+6.3: gci -path ".\aup" -recurse | select FullName | sls ".aup" | measure to find number of files with .aup ending. It's a total of 1380
